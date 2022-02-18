@@ -1,0 +1,52 @@
+:root{
+  --gray: #dee2e6;
+  --darkgray: #ced4da;
+}
+
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body{
+  min-height: 100%;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 18px;
+  background-color: var(--gray);
+}
+
+.header{
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+  font-size: 20px;
+  background-color: white;
+}
+
+.leftHeader{
+  display: flex;
+  justify-content: space-evenly;
+  gap: 25px;
+  padding-left: 50px;
+}
+
+.rightHeader{
+  margin-left: auto;
+  padding-right: 50px;
+}
+
+.header button{
+  height: 50px;
+  width: 70px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: var(--gray);
+  cursor: pointer;
+  border: none;
+}
+
+.header button:hover{
+  background-color: var(--darkgray);
+}
