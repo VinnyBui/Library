@@ -1,6 +1,7 @@
 :root{
   --gray: #dee2e6;
   --darkgray: #ced4da;
+  --shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 *{
@@ -9,11 +10,23 @@
   margin: 0;
 }
 
-body{
-  min-height: 100%;
+html, body{
+  height: 100%;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-size: 18px;
   background-color: var(--gray);
+}
+
+.container{
+  min-height: 100%;
+  padding-bottom: 100px;
+}
+
+.footer{
+  position: relative;
+  height: 90px;
+  margin-top: -90px;
+  clear: both;
 }
 
 .header{
@@ -22,6 +35,7 @@ body{
   padding: 20px;
   font-size: 20px;
   background-color: white;
+  box-shadow: var(--shadow);
 }
 
 .leftHeader{
@@ -49,4 +63,33 @@ body{
 
 .header button:hover{
   background-color: var(--darkgray);
+}
+
+.main{
+  margin-top: 20px;
+  text-align: center;
+}
+
+.main button{
+  font-size: 20px;
+  font-weight: bold;
+  padding: 20px;
+  border: none;
+  border-radius: 15px;
+  background-color: var(--gray);
+  cursor: pointer;
+}
+
+.addbook:hover{
+  background-color: var(--darkgray);
+}
+
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: white;
+  font-size: 20px;
+  font-weight: bold;
 }
