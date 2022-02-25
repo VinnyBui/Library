@@ -1,6 +1,7 @@
 :root{
   --gray: #dee2e6;
   --darkgray: #ced4da;
+  --green: #52b788;
   --shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
@@ -92,4 +93,76 @@ html, body{
   background-color: white;
   font-size: 20px;
   font-weight: bold;
+}
+
+/*Modal*/
+.modal{
+  position: fixed;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  background-color: var(--grey);
+  text-align: center;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 0.2s ease-in-out;
+}
+
+#overlay{
+  position: fixed;
+  opacity: 0;
+  transition: 200ms ease-in-out;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.add-book-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 30px;
+  border-radius: 15px;
+  height: 400px;
+  background-color: white;
+}
+
+.input{
+  width: 200px;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+}
+
+.checkbox{
+  height: 15px;
+  width: 20px;
+}
+
+
+.modal button{
+  height: 50px;
+  width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--green);
+  cursor: pointer;
 }

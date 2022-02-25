@@ -19,13 +19,50 @@
       </button>
     </div>
   </header>
-  <main class="main">
-    <button class="addbook">+ Add Book</button>
+  <main class="main" id="mainContainer">
+    <button class="addbook" id="addBookBtn">+ Add Book</button>
   </main>
 </div>
   <footer class="footer">
     Made by
   </footer>
+  <!--MODAL-->
+  <div class="modal" id="modal">
+    <form class="add-book-form" id="addBookForm">
+      <h2>Add new Book</h2>
+      <input 
+        type="text" 
+        class="input" 
+        id="title" 
+        placeholder="Title"
+        required
+        maxlength="100"
+      >
+      <input 
+        type="text" 
+        class="input" 
+        id="author"
+        placeholder="Author"
+        required
+        maxlength="100"
+      >
+      <input 
+        type="number" 
+        class="input" 
+        id="pages"
+        placeholder="Pages"
+        required
+        minlength="1"
+        maxlength="1000"
+      >
+      <div class="is-read">
+        <label for="">Have you read it?</label>
+        <input type="checkbox" class="checkbox" id="isRead">
+      </div>
+      <button type="submit" class="btn">Submit</button></input>
+    </form>
+  </div>
+  <div id="overlay"></div>
+  <script src="script.js"></script>
 </body>
 </html>
-
