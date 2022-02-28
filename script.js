@@ -38,7 +38,7 @@ if(localStorage.getItem('books') == null){
 }
 
 function showMyLibrary(){
-
+  
 }
 
 //UI
@@ -52,8 +52,8 @@ addBook_btn.addEventListener('click', () => {
   openModal(modal)
 })
 
-document.addEventListener('click', function(event){
 //if the user clicks outside of the modal, it will automatically close the modal
+document.addEventListener('click', function(event){
   if(!event.target.closest(".modal") && !event.target.closest(".addbook")){
     closeModal(modal)
   }
