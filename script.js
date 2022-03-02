@@ -18,6 +18,8 @@ class Book{
   }
 }
 
+
+//Local storage//
 function addBookToLibrary(){
   //check if user read the book
   checkTF();
@@ -25,21 +27,20 @@ function addBookToLibrary(){
   const book = new Book(title.value, author.value, pages.value, isRead.value)
   myLibrary.push(book);
   //set 'books' as key, and put myLibrary as value
+  localSave()
+}
+
+function localSave(){
   localStorage.setItem('books', JSON.stringify(myLibrary));
 }
 
-//if 'books' data is empty, then myLibrary is empty else when local storage calls for 'books', all of the old book will be store in 'oldBooks' variable and that will become the library
 if(localStorage.getItem('books') == null){
   myLibrary = [];
 }else{
-  //get the value stored in 'books' and make myLibrary equal to it
   const oldBooks = JSON.parse(localStorage.getItem('books'));
   myLibrary = oldBooks;
 }
 
-function showMyLibrary(){
-  
-}
 
 //UI
 
@@ -89,6 +90,48 @@ function checkTF(){
 
 //only call when 'SUBMIT' btn is pressed
 document.addEventListener('DOMContentLoaded', ()=>{
-  document.getElementById('btn').addEventListener('click', addBookToLibrary);
+  document.getElementById('btn').addEventListener('click',updateBook);
 });
 
+
+//Display book
+const bookGrid = document.getElementById("bookGrid")
+
+function updateBook(){
+  addBookToLibrary()
+  resetGrid()
+  for(let book of myLibrary){
+    displayBook(book)
+  }
+}
+
+function resetGrid(){
+  bookGrid.innerHTML = ''
+}
+
+function displayBook(book){
+  const bookContainer = document.createElement('div')
+  const title = document.createElement('h1');
+  const author = document.createElement('h2');
+  const pages = document.createElement('h3');
+  const label = document.createElement('label');
+  const input = document.createElement('input');
+  input.type = "checkbox";
+  const span = document.createElement('span')
+
+  bookContainer.classList.add('book')
+  label.classList.add('switch')
+  span.classList.add('slider')
+
+  title.textContent = `"${book.title}"`
+  author.textContent = `"${book.author}"`
+  author.textContent = `"${book.pages}"`
+
+  bookContainer.append(title)
+  bookContainer.append(author)
+  bookContainer.append(pages)
+  bookContainer.append(label)
+  label.append(input)
+  label.append(span)
+  bookGrid.append(bookContainer)
+}
