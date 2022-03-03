@@ -1,13 +1,6 @@
 //Data Structures//
 
 let myLibrary = [];
-/*
-function Book(title, author, pages, read){
-  this.title = title
-  this.author = author
-  this.pages = pages
-  this.read = read
-}*/
 
 class Book{
   constructor(title, author, pages, isRead){
@@ -18,21 +11,16 @@ class Book{
   }
 }
 
-
-//Local storage//
 function addBookToLibrary(){
   //check if user read the book
   checkTF();
   //Creating an object from the 'BOOK' class and pushing to our Library array
-  const book = new Book(title.value, author.value, pages.value, isRead.value)
+  const book = new Book(title.value, author.value, pages.value, isRead.value);
   myLibrary.push(book);
-  //set 'books' as key, and put myLibrary as value
-  localSave()
 }
 
-function localSave(){
-  localStorage.setItem('books', JSON.stringify(myLibrary));
-}
+
+//Local storage//
 
 if(localStorage.getItem('books') == null){
   myLibrary = [];
@@ -41,8 +29,10 @@ if(localStorage.getItem('books') == null){
   myLibrary = oldBooks;
 }
 
+function localSave(){
+  localStorage.setItem('books', JSON.stringify(myLibrary));
+}
 
-//UI
 
 //Modal//
 const addBook_btn = document.getElementById('addBookBtn');
@@ -51,13 +41,6 @@ const modal = document.getElementById('modal');
 
 addBook_btn.addEventListener('click', () => {
   openModal(modal)
-})
-
-//if the user clicks outside of the modal, it will automatically close the modal
-document.addEventListener('click', function(event){
-  if(!event.target.closest(".modal") && !event.target.closest(".addbook")){
-    closeModal(modal)
-  }
 })
 
 function openModal(modal){
@@ -88,21 +71,17 @@ function checkTF(){
   }
 }
 
-//only call when 'SUBMIT' btn is pressed
-document.addEventListener('DOMContentLoaded', ()=>{
-  document.getElementById('btn').addEventListener('click',updateBook);
-});
 
-
-//Display book
+//Display book//
 const bookGrid = document.getElementById("bookGrid")
 
+
 function updateBook(){
-  addBookToLibrary()
   resetGrid()
   for(let book of myLibrary){
     displayBook(book)
   }
+  closeModal(modal)
 }
 
 function resetGrid(){
@@ -110,6 +89,7 @@ function resetGrid(){
 }
 
 function displayBook(book){
+  localSave()
   const bookContainer = document.createElement('div')
   const title = document.createElement('h1');
   const author = document.createElement('h2');
@@ -123,9 +103,9 @@ function displayBook(book){
   label.classList.add('switch')
   span.classList.add('slider')
 
-  title.textContent = `"${book.title}"`
-  author.textContent = `"${book.author}"`
-  author.textContent = `"${book.pages}"`
+  title.textContent = `${book.title}`
+  author.textContent = `${book.author}`
+  pages.textContent = `${book.pages}`
 
   bookContainer.append(title)
   bookContainer.append(author)
@@ -135,3 +115,24 @@ function displayBook(book){
   label.append(span)
   bookGrid.append(bookContainer)
 }
+
+
+//Listeners//
+
+//if the user clicks outside of the modal, it will automatically close the modal
+document.addEventListener('click', function(event){
+  if(!event.target.closest(".modal") && !event.target.closest(".addbook")){
+    closeModal(modal)
+  }
+})
+
+//only call when 'SUBMIT' btn is pressed
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('btn').addEventListener('click',(e) =>{
+    e.preventDefault();
+    addBookToLibrary();
+    updateBook();
+  });
+});
+
+updateBook();
