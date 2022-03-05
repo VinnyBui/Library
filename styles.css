@@ -4,6 +4,12 @@
   --green: #74c69d;
   --darkgreen: #52b788;
   --shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  --white: white;
+  --red: #e63946;
+  --purple: #cdb4db;
+  --darkPurple: #aa75ab;
+
+
 }
 
 *{
@@ -15,9 +21,7 @@
 /*Structure*/
 html, body{
   height: 100%;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  font-size: 18px;
-  background-color: var(--blue);
+  background-color: var(--purple);
 }
 
 .container{
@@ -35,23 +39,18 @@ html, body{
 /*Header*/
 .header{
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
-  font-size: 20px;
-  background-color: white;
-  box-shadow: var(--shadow);
+  font-size: 40px;
+  margin-bottom: 80px;
+  color: var(--white);
+  font-family:Andale Mono, monospace; 
 }
 
-.leftHeader{
-  display: flex;
-  justify-content: space-evenly;
-  gap: 25px;
-  padding-left: 50px;
-}
-
-.rightHeader{
-  margin-left: auto;
-  padding-right: 50px;
+.login{
+  position: absolute;
+  right: 50px;
 }
 
 .header button{
@@ -66,12 +65,11 @@ html, body{
 }
 
 .header button:hover{
-  background-color: var(--blue);
+  background-color: var(--darkPurple);
 }
 
 /*Main*/
 .main{
-  margin-top: 20px;
   text-align: center;
 }
 
@@ -86,15 +84,15 @@ html, body{
 }
 
 .addbook:hover{
-  background-color: ghostwhite;
+  background-color: var(--darkPurple);
 }
 
 .bookContainer{
-  margin: 30px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   justify-items: center;
-  gap: 20px;
+  gap: 30px;
+  padding: 50px 230px;
 }
 
 .book{
@@ -175,9 +173,10 @@ input:checked + .slider:after{
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background-color: white;
+  background-color: black;
   font-size: 20px;
   font-weight: bold;
+  color: var(--white);
 }
 
 /*Modal*/
@@ -186,7 +185,8 @@ input:checked + .slider:after{
   z-index: 1;
   top: 50%;
   left: 50%;
-  width: 300px;
+  width: 400px;
+  height: 500px;
   padding: var(--spacing-lg);
   border-radius: var(--border-radius);
   text-align: center;
@@ -218,26 +218,66 @@ input:checked + .slider:after{
 .add-book-form{
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  gap: 20px;
   padding: 30px;
   border-radius: 15px;
-  height: 400px;
+  height: 500px;
   background-color: white;
 }
 
-.input{
+.form-control{
   width: 200px;
-  border-radius: 10px;
+  height: 50px;
+  position: relative;
+}
+
+.form-control input{
+  border-radius: 6px;
   border: none;
+  font-size: 15px;
+  font-weight: bold;
+  height: 30px;
   padding: 10px;
 }
 
-input[type="text"],[type="number"]{
-  font-size: 15px;
-  font-weight: bold;
+.form-control img{
+  position: absolute;
+  top: 5px;
+  left: 190px;
+  visibility: hidden;
 }
+
+.form-control small{
+  visibility: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+}
+
+.form-control.error small{
+  color: var(--red);
+  visibility: visible;
+}
+
+.form-control.success input{
+  border: 2px solid var(--green); 
+  border-color: var(--green);
+}
+
+.form-control.error input{
+  border: 2px solid var(--red); 
+}
+
+
+.form-control.success img.fa-check-circle{
+  visibility: visible;
+}
+
+.form-control.error img.fa-exclamation-circle{
+  visibility:visible;
+}
+
 
 .is-read{
   display: flex;

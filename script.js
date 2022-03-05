@@ -71,10 +71,57 @@ function checkTF(){
   }
 }
 
+//Form Validation//
+function formValidation(){
+  //trim() removes whitespace
+  const titleValue = title.value.trim();
+  const authorValue = author.value.trim();
+  const pagesValue = pages.value.trim();
+  const isReadValue = isRead.value.trim();
+
+  if(titleValue === ''){
+    setErrorfor(title, "Title cannot be blank");
+  }else{
+    setSuccessFor(title);
+  }
+
+  if(authorValue === ''){
+    setErrorfor(author, "Author cannot be blank");
+  }else{
+    setSuccessFor(author);
+  }
+
+  if(pagesValue === ''){
+    setErrorfor(pages, "Pages cannot be blank");
+  }else{
+    setSuccessFor(pages);
+  }
+
+  //if everything is filled out, then add 
+  if(titleValue !== '' && authorValue !==' ' && pagesValue !== ''){
+    addBookToLibrary();
+    updateBook();
+  }
+}
+
+function setErrorfor(input, message){
+  const formControl = input.parentElement; //.form control
+  const small = formControl.querySelector('small');
+
+  small.innerText = message;
+  formControl.className = 'form-control error';
+}
+
+function setSuccessFor(input){
+  const formControl = input.parentElement;
+  formControl.className = 'form-control success'
+}
+
+
+
 
 //Display book//
 const bookGrid = document.getElementById("bookGrid")
-
 
 function updateBook(){
   resetGrid()
@@ -130,9 +177,9 @@ document.addEventListener('click', function(event){
 document.addEventListener('DOMContentLoaded', ()=>{
   document.getElementById('btn').addEventListener('click',(e) =>{
     e.preventDefault();
-    addBookToLibrary();
-    updateBook();
+    formValidation();
   });
 });
+
 
 updateBook();

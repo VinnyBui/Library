@@ -9,15 +9,10 @@
 <body>
 <div class="container">
   <header class="header">
-    <div class="leftHeader">
-      <img src="imgs/open-book.png" alt="bookicon" width="50px">
       <h1>My Library</h1>
-    </div>
-    <div class="rightHeader">
       <button class="login">
         Login
       </button>
-    </div>
   </header>
   <main class="main" id="mainContainer">
     <button class="addbook" id="addBookBtn">+ Add Book</button>
@@ -46,37 +41,36 @@
   </main>
 </div>
   <footer class="footer">
-    Made by
+    Made by Vinh B
   </footer>
   <!--MODAL-->
   <div class="modal" id="modal">
     <form class="add-book-form" id="addBookForm">
       <h2>Add new Book</h2>
-      <input 
-        type="text" 
-        class="input" 
-        id="title" 
-        placeholder="Title"
-        required
-        maxlength="100"
-      >
-      <input 
-        type="text" 
-        class="input" 
-        id="author"
-        placeholder="Author"
-        required
-        maxlength="100"
-      >
-      <input 
-        type="number" 
-        class="input" 
-        id="pages"
-        placeholder="Pages"
-        required
-        minlength="1"
-        maxlength="1000"
-      >
+
+      <div class="form-control">
+        <input type="text" class="input" id="title" placeholder="Title" required maxlength="100">
+        <img class="fa fa-check-circle" src="/imgs/check.png" height="20px" width="20px"></img>
+        <img class="fa fa-exclamation-circle"
+        src="/imgs/exclamation.png" height="20px"
+        width="20px"></img>
+        <small>Error</small>
+      </div>
+
+      <div class="form-control">
+        <input type="text" class="input" id="author" placeholder="Author" required maxlength="100">
+        <img class="fa fa-check-circle" src="/imgs/check.png" height="20px" width="20px"></img>
+        <img class="fa fa-exclamation-circle"
+        src="/imgs/exclamation.png" height="20px"
+        width="20px"></img>
+        <small>Error</small>
+      </div>
+
+      <div class="form-control">
+        <input type="number" class="input" id="pages" placeholder="Pages" required minlength="1" maxlength="1000">
+        <small>Error</small>
+      </div>
+
       <div class="is-read">
         <label>Have you read it?</label>
         <input type="checkbox" class="checkbox" id="isRead">
