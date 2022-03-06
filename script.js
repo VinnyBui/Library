@@ -18,9 +18,13 @@ function addBookToLibrary(){
   myLibrary.push(book);
 }
 
+function removeBookFromLibrary(event){
+    const index = event.target.parentElement.getAttribute('data-index');
+    myLibrary.splice(index, 1);
+    updateBook();
+}
 
 //Local storage//
-
 if(localStorage.getItem('books') == null){
   myLibrary = [];
 }else{
@@ -123,9 +127,7 @@ const bookGrid = document.getElementById("bookGrid")
 
 function updateBook(){
   resetGrid()
-  for(let book of myLibrary){
-    displayBook(book)
-  }
+  displayBook();
   closeModal(modal)
 }
 
@@ -133,49 +135,48 @@ function resetGrid(){
   bookGrid.innerHTML = '';
 }
 
-function displayBook(book){
+function displayBook(){
   localSave()
-  const bookContainer = document.createElement('div')
-  const removeBtn = document.createElement('img');
-  removeBtn.src="/imgs/x.png";
-  const title = document.createElement('h1');
-  const author = document.createElement('h2');
-  const pages = document.createElement('h3');
-  const label = document.createElement('label');
-  const input = document.createElement('input');
-  input.type = "checkbox";
-  const span = document.createElement('span');
-
-  bookContainer.classList.add('book')
-  label.classList.add('switch')
-  span.classList.add('slider')
-  removeBtn.classList.add('remove')
-  title.textContent = `${book.title}`
-  author.textContent = `${book.author}`
-  pages.textContent = `${book.pages}`
-
-
-
-  bookContainer.append(removeBtn)
-  bookContainer.append(title)
-  bookContainer.append(author)
-  bookContainer.append(pages)
-  bookContainer.append(label)
-  label.append(input)
-  label.append(span)
-  bookGrid.append(bookContainer)
+  for (let i = 0; i < myLibrary.length; i += 1){
+    const bookContainer = document.createElement('div')
+    const removeBtn = document.createElement('img')
+    removeBtn.src="/imgs/x.png";
+    const title = document.createElement('h1');
+    const author = document.createElement('h2');
+    const pages = document.createElement('h3');
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = "checkbox";
+    const span = document.createElement('span');
+  
+    bookContainer.classList.add('book')
+    bookContainer.setAttribute('data-index', i);
+    label.classList.add('switch')
+    span.classList.add('slider')
+    removeBtn.classList.add('remove')
+    title.textContent = `${myLibrary[i].title}`
+    author.textContent = `${myLibrary[i].author}`
+    pages.textContent = `${myLibrary[i].pages}`
+  
+    bookContainer.append(removeBtn)
+    bookContainer.append(title)
+    bookContainer.append(author)
+    bookContainer.append(pages)
+    bookContainer.append(label)
+    label.append(input)
+    label.append(span)
+    bookGrid.append(bookContainer)
+  }
 }
-
-
-//Remove book
-
-
 
 //Listeners//
 //if the user clicks outside of the modal, it will automatically close the modal
 document.addEventListener('click', function(event){
   if(!event.target.closest(".modal") && !event.target.closest(".addbook")){
     closeModal(modal)
+  }
+  if(event.target.className == 'remove'){
+    removeBookFromLibrary(event);
   }
 })
 

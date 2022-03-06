@@ -1,6 +1,4 @@
 :root{
-  --blue: #ccdbfd;
-  --darkblue: #b6ccfe;
   --green: #74c69d;
   --darkgreen: #52b788;
   --shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -59,7 +57,7 @@ html, body{
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
-  background-color: white;
+  background-color: var(--white);
   cursor: pointer;
   border: none;
 }
