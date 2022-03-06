@@ -7,13 +7,12 @@ class Book{
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = isRead;
+    this.readStatus = isRead;
   }
 }
 
 function addBookToLibrary(){
   //check if user read the book
-  checkTF();
   //Creating an object from the 'BOOK' class and pushing to our Library array
   const book = new Book(title.value, author.value, pages.value, isRead.value);
   myLibrary.push(book);
@@ -99,6 +98,7 @@ function formValidation(){
 
   //if everything is filled out, then add 
   if(titleValue !== '' && authorValue !==' ' && pagesValue !== ''){
+    checkTF();
     addBookToLibrary();
     updateBook();
   }
@@ -118,8 +118,6 @@ function setSuccessFor(input){
 }
 
 
-
-
 //Display book//
 const bookGrid = document.getElementById("bookGrid")
 
@@ -132,28 +130,33 @@ function updateBook(){
 }
 
 function resetGrid(){
-  bookGrid.innerHTML = ''
+  bookGrid.innerHTML = '';
 }
 
 function displayBook(book){
   localSave()
   const bookContainer = document.createElement('div')
+  const removeBtn = document.createElement('img');
+  removeBtn.src="/imgs/x.png";
   const title = document.createElement('h1');
   const author = document.createElement('h2');
   const pages = document.createElement('h3');
   const label = document.createElement('label');
   const input = document.createElement('input');
   input.type = "checkbox";
-  const span = document.createElement('span')
+  const span = document.createElement('span');
 
   bookContainer.classList.add('book')
   label.classList.add('switch')
   span.classList.add('slider')
-
+  removeBtn.classList.add('remove')
   title.textContent = `${book.title}`
   author.textContent = `${book.author}`
   pages.textContent = `${book.pages}`
 
+
+
+  bookContainer.append(removeBtn)
   bookContainer.append(title)
   bookContainer.append(author)
   bookContainer.append(pages)
@@ -164,8 +167,11 @@ function displayBook(book){
 }
 
 
-//Listeners//
+//Remove book
 
+
+
+//Listeners//
 //if the user clicks outside of the modal, it will automatically close the modal
 document.addEventListener('click', function(event){
   if(!event.target.closest(".modal") && !event.target.closest(".addbook")){
@@ -173,12 +179,9 @@ document.addEventListener('click', function(event){
   }
 })
 
-//only call when 'SUBMIT' btn is pressed
-document.addEventListener('DOMContentLoaded', ()=>{
-  document.getElementById('btn').addEventListener('click',(e) =>{
-    e.preventDefault();
-    formValidation();
-  });
+document.getElementById('btn').addEventListener('click',(e) =>{
+  e.preventDefault();
+  formValidation();
 });
 
 
