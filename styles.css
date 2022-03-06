@@ -2,12 +2,13 @@
   --green: #74c69d;
   --darkgreen: #52b788;
   --shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  --white: white;
+  --white: #FFF6FF;
   --red: #e63946;
   --purple: #cdb4db;
-  --darkPurple: #aa75ab;
-
-
+  --darkPurple: #9781a3;
+  --darkerPurple: #887393;
+  --lightPurple: #B2A7B8;
+  --darkestPurple: #4D4352;
 }
 
 *{
@@ -57,13 +58,14 @@ html, body{
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
-  background-color: var(--white);
+  background-color: var(--darkPurple);
   cursor: pointer;
   border: none;
+  color: var(--white);
 }
 
 .header button:hover{
-  background-color: var(--darkPurple);
+  background-color: var(--darkerPurple);
 }
 
 /*Main*/
@@ -77,12 +79,13 @@ html, body{
   padding: 20px;
   border: none;
   border-radius: 15px;
-  background-color: white;
+  background-color: var(--darkPurple);
   cursor: pointer;
+  color: var(--white);
 }
 
 .addbook:hover{
-  background-color: var(--darkPurple);
+  background-color: var(--darkerPurple);
 }
 
 .bookContainer{
@@ -100,8 +103,9 @@ html, body{
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background-color: white;
-  width: 230px;
+  background-color: var(--darkPurple);
+  color: var(--white);
+  width: 270px;
   height: 230px;
   border-radius: 15px;
   box-shadow:rgba(0, 0, 0, 0.30) 5px 5px 10px;
@@ -130,7 +134,7 @@ html, body{
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #b6ccfe;
+  background-color: #B2A7B8;
   transition: .4s;
   border-radius: 34px;
 }
@@ -153,14 +157,14 @@ html, body{
 .slider:after{
   content: "Not Read";
   position: absolute;
-  color: black;
+  color: var(--white);
   font-weight: bold;
   top: 4px;
   right: 38px;
 }
 
 input:checked + .slider{
-  background-color: var(--darkgreen);
+  background-color: #4D4352;
 }
 
 input:checked + .slider:before{
@@ -179,7 +183,7 @@ input:checked + .slider:after{
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background-color: black;
+  background-color: var(--purple);
   font-size: 20px;
   font-weight: bold;
   color: var(--white);

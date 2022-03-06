@@ -139,8 +139,8 @@ function displayBook(){
   localSave()
   for (let i = 0; i < myLibrary.length; i += 1){
     const bookContainer = document.createElement('div')
-    const removeBtn = document.createElement('img')
-    removeBtn.src="/imgs/x.png";
+    const removeBtn = document.createElement('h3')
+    removeBtn.textContent = 'X'
     const title = document.createElement('h1');
     const author = document.createElement('h2');
     const pages = document.createElement('h3');
