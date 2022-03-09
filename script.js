@@ -80,7 +80,6 @@ function formValidation(){
   const titleValue = title.value.trim();
   const authorValue = author.value.trim();
   const pagesValue = pages.value.trim();
-  const isReadValue = isRead.value.trim();
 
   if(titleValue === ''){
     setErrorfor(title, "Title cannot be blank");
@@ -151,13 +150,18 @@ function displayBook(){
   
     bookContainer.classList.add('book')
     bookContainer.setAttribute('data-index', i);
+    input.classList.add('input-slider')
     label.classList.add('switch')
     span.classList.add('slider')
     removeBtn.classList.add('remove')
     title.textContent = `${myLibrary[i].title}`
     author.textContent = `${myLibrary[i].author}`
     pages.textContent = `${myLibrary[i].pages}`
-  
+    
+    if(myLibrary[i].readStatus == 'true'){
+      input.checked = true;
+    }
+    
     bookContainer.append(removeBtn)
     bookContainer.append(title)
     bookContainer.append(author)
