@@ -317,3 +317,9 @@ input:checked + .slider:after{
   background-color: var(--darkerPurple);
 }
 
+a{
+  text-decoration: none;
+  color: var(--white);
+}
+
+/*Login*/
