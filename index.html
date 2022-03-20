@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="imgs/book-stack.png">
+  <script src="/script.js" defer></script>
   <title>Library</title>
 </head>
 <body>
@@ -60,7 +61,20 @@
     </form>
   </div>
   <div id="overlay"></div>
-  <script type="module" src="/script.js"></script>
 
+  <script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDfs9Fea4SXloKX1nP1LtWfPDcjr77Zeeo",
+      authDomain: "digital-library-497be.firebaseapp.com",
+      projectId: "digital-library-497be",
+      storageBucket: "digital-library-497be.appspot.com",
+      messagingSenderId: "586824525857",
+      appId: "1:586824525857:web:83345e6157311acacb9b60"
+    }
+    firebase.initializeApp(firebaseConfig)
+  </script>
 </body>
 </html>

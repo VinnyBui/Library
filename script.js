@@ -194,37 +194,16 @@ updateBook();
 
 
 //Firebase
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.9/firebase-app.js";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.9/firebase-auth.js"
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDfs9Fea4SXloKX1nP1LtWfPDcjr77Zeeo",
-  authDomain: "digital-library-497be.firebaseapp.com",
-  projectId: "digital-library-497be",
-  storageBucket: "digital-library-497be.appspot.com",
-  messagingSenderId: "586824525857",
-  appId: "1:586824525857:web:83345e6157311acacb9b60"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const logInBtn = document.getElementById('logInBtn');
-
-
-onAuthStateChanged(auth, user => {
-  if(user != null){
-    console.log('Logged in');
-  }else{
-    console.log('no user');
-  }
-});
 
 function signIn(){
-  var google_provider = new GoogleAuthProvider();
-  auth.signInWithPopup(google_provider);
-};
+  let provider = new firebase.auth.GoogleAuthProvider()
+  firebase.auth().signInWithPopup(provider).then((rel)=>{
+    console.log(rel)
+  }).catch((err => {
+    console.log(err)
+  }))
+}
 
+const logIn = document.getElementById('logInBtn')
 
-logInBtn.onclick = () => signIn();
+logIn.onclick = signIn()
