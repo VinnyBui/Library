@@ -39,7 +39,7 @@ html, body{
 /*Header*/
 .header{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 20px;
   font-size: 40px;
@@ -47,14 +47,18 @@ html, body{
   color: var(--white);
 }
 
-.login{
-  position: absolute;
-  right: 50px;
+.logIn, .logOut {
+  display: none;
 }
 
-.header button{
+.logIn.active, .logOut.active{
+  display: flex;
+  gap: 10px;
+}
+
+.btn{
   height: 50px;
-  width: 70px;
+  width: 100px;
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
@@ -64,7 +68,7 @@ html, body{
   color: var(--white);
 }
 
-.header button:hover{
+.btn:hover{
   background-color: var(--darkerPurple);
 }
 
