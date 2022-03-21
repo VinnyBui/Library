@@ -195,15 +195,44 @@ updateBook();
 
 //Firebase
 
+const auth = firebase.auth()
+const logInBtn = document.getElementById('logInBtn')
+const logInUI = document.querySelector('.logIn')
+const logOutUI = document.querySelector('.logOut')
+const logOutBtn = document.getElementById('logOutBtn')
+
 function signIn(){
   let provider = new firebase.auth.GoogleAuthProvider()
-  firebase.auth().signInWithPopup(provider).then((rel)=>{
+  auth.signInWithPopup(provider).then((rel)=>{
     console.log(rel)
   }).catch((err => {
     console.log(err)
   }))
 }
 
-const logIn = document.getElementById('logInBtn')
+function signOut(){
+  auth.signOut()
+}
 
-logIn.onclick = signIn()
+function navBar(user){
+  if(user){
+    logInUI.classList.remove('active')
+    logOutUI.classList.add('active')
+  }else{
+    logInUI.classList.add('active')
+    logOutUI.classList.remove('active')
+  }
+}
+
+auth.onAuthStateChanged(function(user){
+  if(user){
+    console.log("user is in")
+  }else{
+    console.log('user is out')
+  }
+  navBar(user)
+});
+
+
+logInBtn.onclick = () => signIn()
+logOutBtn.onclick = () => signOut()
