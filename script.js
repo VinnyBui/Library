@@ -102,8 +102,13 @@ function formValidation(){
   //if everything is filled out, then add 
   if(titleValue !== '' && authorValue !==' ' && pagesValue !== ''){
     checkTF();
-    addBookToLibrary();
-    updateBook();
+    if(auth.currentUser){
+      createBook();
+      updateBook();
+    }else{
+      addBookToLibrary();
+      updateBook();
+    }
   }
 }
 
@@ -161,6 +166,12 @@ function displayBook(){
     if(myLibrary[i].readStatus == 'true'){
       input.checked = true;
     }
+
+    if(input.checked){
+      myLibrary[i].readStatus == true;
+    }else{
+      myLibrary[i].readStatus == false;
+    }
     
     bookContainer.append(removeBtn)
     bookContainer.append(title)
@@ -201,6 +212,8 @@ const logInUI = document.querySelector('.logIn')
 const logOutUI = document.querySelector('.logOut')
 const logOutBtn = document.getElementById('logOutBtn')
 
+
+//user login/logout
 function signIn(){
   let provider = new firebase.auth.GoogleAuthProvider()
   auth.signInWithPopup(provider).then((rel)=>{
@@ -233,6 +246,35 @@ auth.onAuthStateChanged(function(user){
   navBar(user)
 });
 
+
+//Firestore
+
+const db = firebase.firestore()
+
+function getFormInput(){
+  const book = new Book(title.value, author.value, pages.value, isRead.value);
+  return book;
+}
+
+function createBook(){
+  const newBook = getFormInput()
+  addBookDB(newBook)
+}
+
+function addBookDB(book){
+  db.collection('books').add(bookToDoc(book))
+}
+
+function bookToDoc(book){
+  return {
+    ownerId: auth.currentUser.uid,
+    title: book.title,
+    author: book.author,
+    pages: book.pages,
+    isRead: book.readStatus,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+  }
+}
 
 logInBtn.onclick = () => signIn()
 logOutBtn.onclick = () => signOut()
