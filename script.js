@@ -11,7 +11,7 @@ class Book{
   }
 }
 
-function addBookToLibrary(){
+function createBook(){
   //check if user read the book
   //Creating an object from the 'BOOK' class and pushing to our Library array
   const book = new Book(title.value, author.value, pages.value, isRead.value);
@@ -103,10 +103,11 @@ function formValidation(){
   if(titleValue !== '' && authorValue !==' ' && pagesValue !== ''){
     checkTF();
     if(auth.currentUser){
-      createBook();
+      createBookDB();
+      setupRealTimeListener();
       updateBook();
     }else{
-      addBookToLibrary();
+      createBook();
       updateBook();
     }
   }
@@ -131,10 +132,14 @@ const bookGrid = document.getElementById("bookGrid");
 
 function updateBook(){
   resetGrid()
-  displayBook();
+  displayBook()
   closeModal(modal)
 }
 
+function updateBookDB(){
+  resetGrid()
+  closeModal(modal)
+}
 function resetGrid(){
   bookGrid.innerHTML = '';
 }
@@ -204,7 +209,7 @@ document.getElementById('btn').addEventListener('click',(e) =>{
 updateBook();
 
 
-//Firebase
+//Firebase auth
 
 const auth = firebase.auth()
 const logInBtn = document.getElementById('logInBtn')
@@ -240,14 +245,16 @@ function navBar(user){
 auth.onAuthStateChanged(function(user){
   if(user){
     console.log("user is in")
+    console.log(myLibrary)
   }else{
     console.log('user is out')
+    console.log(myLibrary)
   }
   navBar(user)
 });
 
 
-//Firestore
+//Firestore//
 
 const db = firebase.firestore()
 
@@ -256,15 +263,16 @@ function getFormInput(){
   return book;
 }
 
-function createBook(){
-  const newBook = getFormInput()
-  addBookDB(newBook)
-}
-
 function addBookDB(book){
   db.collection('books').add(bookToDoc(book))
 }
 
+function createBookDB(){
+  const newBook = getFormInput()
+  addBookDB(newBook)
+}
+
+//converting all our info into doc fields
 function bookToDoc(book){
   return {
     ownerId: auth.currentUser.uid,
@@ -275,6 +283,31 @@ function bookToDoc(book){
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   }
 }
+
+let unsubscribe
+
+const setupRealTimeListener = () => {
+  unsubscribe = db
+    .collection('books')
+    .where('ownerId', '==', auth.currentUser.uid)
+    .orderBy('createdAt')
+    .onSnapshot((snapshot) => {
+      myLibrary = docsToBooks(snapshot.docs)
+      displayBook()
+    })
+}
+
+const docsToBooks = (docs) => {
+  return docs.map((doc) => {
+    return new Book(
+      doc.data().title,
+      doc.data().author,
+      doc.data().pages,
+      doc.data().isRead
+    )
+  })
+}
+
 
 logInBtn.onclick = () => signIn()
 logOutBtn.onclick = () => signOut()
