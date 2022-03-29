@@ -22,15 +22,19 @@ function removeBookFromLibrary(event){
     const index = event.target.parentElement.getAttribute('data-index');
     myLibrary.splice(index, 1);
     updateBook();
+    localSave();
 }
 
 //Local storage//
-if(localStorage.getItem('books') == null){
-  myLibrary = [];
-}else{
+function restoreLocal(){
   const oldBooks = JSON.parse(localStorage.getItem('books'));
-  myLibrary = oldBooks;
+  if(localStorage.getItem('books') == null){
+    myLibrary = [];
+  }else{
+    myLibrary = oldBooks;
+  }
 }
+
 
 function localSave(){
   localStorage.setItem('books', JSON.stringify(myLibrary));
@@ -104,10 +108,10 @@ function formValidation(){
     checkTF();
     if(auth.currentUser){
       createBookDB();
-      setupRealTimeListener();
     }else{
       createBook();
       updateBook();
+      localSave();
     }
   }
 }
@@ -140,7 +144,6 @@ function resetGrid(){
 }
 
 function displayBook(){
-  localSave()
   for (let i = 0; i < myLibrary.length; i += 1){
     const bookContainer = document.createElement('div')
     const removeBtn = document.createElement('h3')
@@ -241,9 +244,12 @@ auth.onAuthStateChanged(function(user){
   if(user){
     console.log("user is in")
     console.log(myLibrary)
+    setupRealTimeListener()
   }else{
     console.log('user is out')
     console.log(myLibrary)
+    restoreLocal()
+    updateBook()
   }
   navBar(user)
 });
@@ -281,7 +287,8 @@ function bookToDoc(book){
 
 let unsubscribe
 
-const setupRealTimeListener = () => {
+//calling for a list of books that has the same ownerId and setting it to myLibrary
+function setupRealTimeListener(){
   unsubscribe = db
     .collection('books')
     .where('ownerId', '==', auth.currentUser.uid)
@@ -292,7 +299,8 @@ const setupRealTimeListener = () => {
     })
 }
 
-const docsToBooks = (docs) => {
+//getting values from document
+function docsToBooks(docs){
   return docs.map((doc) => {
     return new Book(
       doc.data().title,
