@@ -105,7 +105,6 @@ function formValidation(){
     if(auth.currentUser){
       createBookDB();
       setupRealTimeListener();
-      updateBook();
     }else{
       createBook();
       updateBook();
@@ -136,10 +135,6 @@ function updateBook(){
   closeModal(modal)
 }
 
-function updateBookDB(){
-  resetGrid()
-  closeModal(modal)
-}
 function resetGrid(){
   bookGrid.innerHTML = '';
 }
@@ -293,7 +288,7 @@ const setupRealTimeListener = () => {
     .orderBy('createdAt')
     .onSnapshot((snapshot) => {
       myLibrary = docsToBooks(snapshot.docs)
-      displayBook()
+      updateBook()
     })
 }
 
