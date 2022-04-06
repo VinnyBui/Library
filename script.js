@@ -20,9 +20,15 @@ function createBook(){
 
 function removeBookFromLibrary(event){
     const index = event.target.parentElement.getAttribute('data-index');
-    myLibrary.splice(index, 1);
-    updateBook();
-    localSave();
+
+    if(auth.currentUser){
+      removeBookDB(index);
+      updateBook();
+    }else{
+      myLibrary.splice(index, 1);
+      updateBook();
+      localSave();
+    }
 }
 
 //Local storage//
@@ -243,11 +249,9 @@ function navBar(user){
 auth.onAuthStateChanged(function(user){
   if(user){
     console.log("user is in")
-    console.log(myLibrary)
     setupRealTimeListener()
   }else{
     console.log('user is out')
-    console.log(myLibrary)
     restoreLocal()
     updateBook()
   }
@@ -311,6 +315,29 @@ function docsToBooks(docs){
   })
 }
 
+//delete
+const getBookByIndex = async (index) =>{
+  //Grabbing the document of the current user and organizing it ascending order from least to most recent timestamp
+  const snapshot = await db
+  .collection('books')
+  .where('ownerId','==', auth.currentUser.uid)
+  .orderBy("createdAt", "asc")
+  .get()
+  
+  //Getting all the document ID of the snapshot
+  const bookID = snapshot.docs.map(doc => doc.id)
+  //Sending out the Document ID of the book user wants to remove
+  return bookID[index]
+}
+
+const removeBookDB = async (index) =>{
+  //Calling for the document with bookID we want to remove and delete it from DB
+  db.collection('books')
+  .doc(await getBookByIndex(index))
+  .delete()
+}
 
 logInBtn.onclick = () => signIn()
 logOutBtn.onclick = () => signOut()
+
+
