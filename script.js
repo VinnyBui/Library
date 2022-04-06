@@ -7,14 +7,14 @@ class Book{
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.readStatus = isRead;
+    this.isRead = isRead;
   }
 }
 
 function createBook(){
   //check if user read the book
   //Creating an object from the 'BOOK' class and pushing to our Library array
-  const book = new Book(title.value, author.value, pages.value, isRead.value);
+  const book = new Book(title.value, author.value, pages.value, isRead.checked);
   myLibrary.push(book);
 }
 
@@ -29,6 +29,19 @@ function removeBookFromLibrary(event){
       updateBook();
       localSave();
     }
+}
+
+function toggleRead(event){
+  const index = event.target.parentElement.parentElement.getAttribute('data-index');
+  const book = myLibrary[index]
+
+  if(auth.currentUser){
+    toggleReadDB(index)
+  }else{
+    book.isRead = !book.isRead
+    localSave()
+    updateBook()
+  }
 }
 
 //Local storage//
@@ -75,14 +88,6 @@ const author = document.getElementById('author');
 const pages = document.getElementById('pages');
 const isRead = document.getElementById('isRead');
 
-//make true & false to see if the reader have read the book
-function checkTF(){
-  if(isRead.checked == true){
-    isRead.value = true;
-  }else{
-    isRead.value = false;
-  }
-}
 
 //Form Validation//
 function formValidation(){
@@ -111,7 +116,7 @@ function formValidation(){
 
   //if everything is filled out, then add 
   if(titleValue !== '' && authorValue !==' ' && pagesValue !== ''){
-    checkTF();
+  
     if(auth.currentUser){
       createBookDB();
     }else{
@@ -119,6 +124,7 @@ function formValidation(){
       updateBook();
       localSave();
     }
+    console.log(myLibrary)
   }
 }
 
@@ -172,14 +178,11 @@ function displayBook(){
     author.textContent = `${myLibrary[i].author}`
     pages.textContent = `${myLibrary[i].pages}`
     
-    if(myLibrary[i].readStatus == 'true'){
+    //marks input in the beginning
+    if(myLibrary[i].isRead){
       input.checked = true;
-    }
-
-    if(input.checked){
-      myLibrary[i].readStatus == true;
     }else{
-      myLibrary[i].readStatus == false;
+      input.checked = false;
     }
     
     bookContainer.append(removeBtn)
@@ -202,9 +205,12 @@ document.addEventListener('click', function(event){
   if(event.target.className == 'remove'){
     removeBookFromLibrary(event);
   }
+  if(event.target.className == 'input-slider'){
+    toggleRead(event);
+  }
 })
 
-document.getElementById('btn').addEventListener('click',(e) =>{
+document.getElementById('submitBtn').addEventListener('click',(e) =>{
   e.preventDefault();
   formValidation();
 });
@@ -264,7 +270,7 @@ auth.onAuthStateChanged(function(user){
 const db = firebase.firestore()
 
 function getFormInput(){
-  const book = new Book(title.value, author.value, pages.value, isRead.value);
+  const book = new Book(title.value, author.value, pages.value, isRead.checked);
   return book;
 }
 
@@ -284,7 +290,7 @@ function bookToDoc(book){
     title: book.title,
     author: book.author,
     pages: book.pages,
-    isRead: book.readStatus,
+    isRead: book.isRead,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   }
 }
@@ -335,6 +341,12 @@ const removeBookDB = async (index) =>{
   db.collection('books')
   .doc(await getBookByIndex(index))
   .delete()
+}
+
+const toggleReadDB = async (index) =>{
+  db.collection('books')
+  .doc(await getBookByIndex(index))
+  .update({isRead: !myLibrary[index].isRead})
 }
 
 logInBtn.onclick = () => signIn()
