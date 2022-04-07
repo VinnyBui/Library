@@ -30,7 +30,7 @@
     Made by Vinh B
   </footer>
   <!--MODAL-->
-  <div class="modal" id="modal">
+  <div class="modal" id="addBookModal">
     <form class="add-book-form" id="addBookForm">
       <h2>Add new Book</h2>
 
@@ -49,7 +49,7 @@
       </div>
 
       <div class="form-control">
-        <input type="number" class="input" id="pages" placeholder="Pages" required minlength="1" maxlength="1000">
+        <input type="number" class="input" id="pages" placeholder="Pages" required minlength="1">
         <small>Error</small>
       </div>
 
@@ -59,6 +59,14 @@
       </div>
       <button type="submit" class="btn" id="submitBtn">Submit</button>
     </form>
+  </div>
+  <div class="modal" id="accountModal">
+    <div class="account-modal">
+      <div class="userName" id="userName">
+      </div>
+      <div class="stats" id="stats">
+      </div>
+    </div>
   </div>
   <div id="overlay"></div>
 

@@ -24,6 +24,7 @@ function removeBookFromLibrary(event){
     if(auth.currentUser){
       removeBookDB(index);
       updateBook();
+      updateStats();
     }else{
       myLibrary.splice(index, 1);
       updateBook();
@@ -37,6 +38,7 @@ function toggleRead(event){
 
   if(auth.currentUser){
     toggleReadDB(index)
+    updateStats()
   }else{
     book.isRead = !book.isRead
     localSave()
@@ -54,32 +56,41 @@ function restoreLocal(){
   }
 }
 
-
 function localSave(){
   localStorage.setItem('books', JSON.stringify(myLibrary));
 }
 
-
 //Modal//
 const addBook_btn = document.getElementById('addBookBtn');
 const overlay = document.getElementById('overlay');
-const modal = document.getElementById('modal');
+const addBookModal = document.getElementById('addBookModal');
+const accountModal = document.getElementById('accountModal');
+const account_btn = document.getElementById('accountBtn');
 
-addBook_btn.addEventListener('click', () => {
-  openModal(modal)
-})
-
-function openModal(modal){
-  if(modal == null) return
-  modal.classList.add('active')
+function openModal(){
+  addBookModal.classList.add('active')
   overlay.classList.add('active')
 }
 
-function closeModal(modal){
-  modal.classList.remove('active')
+function closeModal(){
+  addBookModal.classList.remove('active')
   overlay.classList.remove('active')
 }
 
+function openAccountModal(){
+  accountModal.classList.add('active')
+  overlay.classList.add('active')
+}
+
+function closeAccountModal(){
+  accountModal.classList.remove('active')
+  overlay.classList.remove('active')
+}
+
+function closeAllModals(){
+  closeModal()
+  closeAccountModal()
+}
 
 //Form input//
 const form = document.getElementById('addBookForm');
@@ -119,6 +130,7 @@ function formValidation(){
   
     if(auth.currentUser){
       createBookDB();
+      updateStats();
     }else{
       createBook();
       updateBook();
@@ -148,7 +160,7 @@ const bookGrid = document.getElementById("bookGrid");
 function updateBook(){
   resetGrid()
   displayBook()
-  closeModal(modal)
+  closeModal()
 }
 
 function resetGrid(){
@@ -197,11 +209,7 @@ function displayBook(){
 }
 
 //Listeners//
-//if the user clicks outside of the modal, it will automatically close the modal
 document.addEventListener('click', function(event){
-  if(!event.target.closest(".modal") && !event.target.closest(".addbook")){
-    closeModal(modal)
-  }
   if(event.target.className == 'remove'){
     removeBookFromLibrary(event);
   }
@@ -215,6 +223,21 @@ document.getElementById('submitBtn').addEventListener('click',(e) =>{
   formValidation();
 });
 
+addBook_btn.addEventListener('click', () => {
+  openModal()
+})
+
+account_btn.addEventListener('click', () =>{
+  openAccountModal()
+})
+
+const handleKeyboardInput = (e) => {
+  if (e.key === 'Escape') closeAllModals()
+}
+
+window.onkeydown = handleKeyboardInput
+
+overlay.onclick = closeAllModals
 
 updateBook();
 
@@ -226,7 +249,8 @@ const logInBtn = document.getElementById('logInBtn')
 const logInUI = document.querySelector('.logIn')
 const logOutUI = document.querySelector('.logOut')
 const logOutBtn = document.getElementById('logOutBtn')
-
+const userName = document.getElementById('userName')
+const stats = document.getElementById('stats')
 
 //user login/logout
 function signIn(){
@@ -252,6 +276,48 @@ function navBar(user){
   }
 }
 
+function setupAccountModal(user){
+  if(user){
+    userName.innerHTML =  `
+    <p>Logged in as</p>
+    <p><strong>${user.email.split('@')[0]}</strong></p>`
+  }else{
+    userName.innerHTML = ''
+  }
+}
+
+//Have to provide the async and await so you can capture the data
+//instead of waiting for the data to keep pending
+async function updateStats(){
+  let total = await getTotalBook()
+  let read = await getTotalRead()
+  stats.innerHTML = `        
+  <p>Amount of Books: <strong>${total}</strong> </p>
+  <p>How many Read: <strong>${read}</strong></p>`
+}
+
+
+//getting total amount of books the user has added
+const getTotalBook = async () =>{
+  const snapshot = await db
+  .collection('books')
+  .where('ownerId','==', auth.currentUser.uid)
+  .get()
+
+  return snapshot.size
+}
+
+//getting snapshot size of the total book that isRead
+const getTotalRead = async () =>{
+  const snapshot = await db
+  .collection('books')
+  .where('ownerId','==', auth.currentUser.uid)
+  .where('isRead', '==', !!isRead)
+  .get()
+
+  return snapshot.size
+}
+
 auth.onAuthStateChanged(function(user){
   if(user){
     console.log("user is in")
@@ -261,6 +327,8 @@ auth.onAuthStateChanged(function(user){
     restoreLocal()
     updateBook()
   }
+  updateStats()
+  setupAccountModal(user)
   navBar(user)
 });
 
@@ -343,11 +411,14 @@ const removeBookDB = async (index) =>{
   .delete()
 }
 
+//Toggle Read Book
 const toggleReadDB = async (index) =>{
   db.collection('books')
   .doc(await getBookByIndex(index))
   .update({isRead: !myLibrary[index].isRead})
 }
+
+
 
 logInBtn.onclick = () => signIn()
 logOutBtn.onclick = () => signOut()
