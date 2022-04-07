@@ -109,9 +109,10 @@ html, body{
   gap: 20px;
   background-color: var(--darkPurple);
   color: var(--white);
-  width: 270px;
-  height: 230px;
+  width: 300px;
+  height: 300px;
   border-radius: 15px;
+  padding: 20px;
   box-shadow:rgba(0, 0, 0, 0.30) 5px 5px 10px;
 }
 
